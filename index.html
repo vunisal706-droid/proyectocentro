@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Centro - CEIP Capitulaciones</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="description" content="Visualizador del Plan de Centro del CEIP Capitulaciones - Santa Fe">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --orange: #f97316;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-text h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .brand-text p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            max-width: 1800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 320px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        /* DOCUMENT CARDS */
+        .document-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .document-card {
+            background: linear-gradient(135deg, var(--surface) 0%, #fafafa 100%);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--doc-color, var(--primary));
+            transition: width 0.3s ease;
+        }
+
+        .document-card:hover::before {
+            width: 8px;
+        }
+
+        .document-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border-color: var(--doc-color, var(--primary));
+        }
+
+        .document-card.active {
+            border-color: var(--doc-color, var(--primary));
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(37, 99, 235, 0.05) 100%);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+        }
+
+        .document-card.active::before {
+            width: 8px;
+        }
+
+        .doc-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .doc-info {
+            flex: 1;
+        }
+
+        .doc-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .doc-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .doc-badge {
+            background: var(--bg);
+            color: var(--text-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* INDEX LIST */
+        .index-list {
+            margin-top: 1rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .index-list.active {
+            max-height: 1000px;
+        }
+
+        .index-item {
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0;
+            background: var(--bg);
+            border-left: 3px solid var(--doc-color, var(--primary));
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .index-item:hover {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.1) 0%, transparent 100%);
+            transform: translateX(4px);
+        }
+
+        .index-item.active {
+            background: var(--doc-color, var(--primary));
+            color: white;
+            font-weight: 600;
+        }
+
+        /* PDF VIEWER */
+        .pdf-viewer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #525659;
+            position: relative;
+        }
+
+        .pdf-container {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .pdf-info {
+            background: rgba(30, 41, 59, 0.95);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        .pdf-doc-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pdf-doc-icon {
+            font-size: 1.2rem;
+        }
+
+        .pdf-page-info {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* LOADING */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(82, 86, 89, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .welcome-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .welcome-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-text {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 500px;
+        }
+
+        /* MOBILE OVERLAY */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* PWA INSTALL PROMPT */
+        .install-prompt {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 90%;
+            z-index: 200;
+            transition: bottom 0.3s ease;
+        }
+
+        .install-prompt.active {
+            bottom: 2rem;
+        }
+
+        .install-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .install-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .install-content h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+
+        .install-content p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .install-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .install-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .install-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .install-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .install-btn.secondary {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .install-btn.secondary:hover {
+            background: var(--border);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 100;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .brand-text h1 {
+                font-size: 1.1rem;
+            }
+
+            .brand-text p {
+                display: none;
+            }
+
+            .btn-text {
+                display: none;
+            }
+
+            .pdf-info {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+
+            .pdf-doc-title {
+                font-size: 0.85rem;
+            }
+
+            .pdf-page-info {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="brand-icon">📚</div>
+                    <div class="brand-text">
+                        <h1>Plan de Centro</h1>
+                        <p>CEIP Capitulaciones - Santa Fe</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn" id="menuBtn">
+                        <span class="btn-icon">☰</span>
+                        <span class="btn-text">Menú</span>
+                    </button>
+                    <button class="btn" id="downloadBtn">
+                        <span class="btn-icon">⬇</span>
+                        <span class="btn-text">Descargar</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">Documentos del Plan</div>
+                    <div class="sidebar-subtitle">Selecciona una sección</div>
+                </div>
+                <div class="sidebar-content">
+                    <div class="document-grid" id="documentGrid"></div>
+                </div>
+            </aside>
+
+            <!-- PDF Viewer -->
+            <main class="pdf-viewer" id="pdfViewer">
+                <!-- Welcome Screen -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-icon">📖</div>
+                    <h2 class="welcome-title">Plan de Centro</h2>
+                    <p class="welcome-text">Selecciona un documento del menú lateral para comenzar a visualizar el contenido</p>
+                </div>
+
+                <!-- PDF Container -->
+                <div class="pdf-container" id="pdfContainer" style="display: none;">
+                    <iframe class="pdf-iframe" id="pdfIframe"></iframe>
+                    <div class="pdf-info" id="pdfInfo">
+                        <div class="pdf-doc-title">
+                            <span class="pdf-doc-icon" id="docIcon">📘</span>
+                            <span id="docTitle">Documento</span>
+                        </div>
+                        <div class="pdf-page-info" id="pageInfo">Página 1</div>
+                    </div>
+                </div>
+
+                <!-- Loading Overlay -->
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Cargando PDF...</div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Overlay para móvil -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Install Prompt -->
+    <div class="install-prompt" id="installPrompt">
+        <div class="install-header">
+            <div class="install-icon">📱</div>
+            <div class="install-content">
+                <h3>Instalar App</h3>
+                <p>Accede al Plan de Centro desde tu pantalla de inicio</p>
+            </div>
+        </div>
+        <div class="install-actions">
+            <button class="install-btn primary" id="installBtn">Instalar</button>
+            <button class="install-btn secondary" id="dismissBtn">Ahora no</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de documentos
+        const documents = [
+            {
+                id: 'proyecto',
+                title: 'Proyecto Educativo',
+                file: 'Proyecto_educativo25.pdf',
+                icon: '📘',
+                color: '#2563eb',
+                colorDark: '#1e40af',
+                sections: [
+                    { id: 'A', title: 'A. Objetivos propios para mejora del rendimiento', page: 5 },
+                    { id: 'B', title: 'B. Líneas generales de actuación pedagógica', page: 7 },
+                    { id: 'C', title: 'C. Coordinación y concreción curricular', page: 9 },
+                    { id: 'D', title: 'D. Criterios pedagógicos para horarios', page: 16 },
+                    { id: 'E', title: 'E. Procedimientos de evaluación y promoción', page: 16 },
+                    { id: 'F', title: 'F. Atención a la diversidad', page: 23 },
+                    { id: 'G', title: 'G. Plan de Atención a la Diversidad (PAD)', page: 25 },
+                    { id: 'H', title: 'H. Plan de Orientación y Acción Tutorial', page: 76 },
+                    { id: 'I', title: 'I. Compromisos educativos y de convivencia', page: 78 },
+                    { id: 'J', title: 'J. Plan de Convivencia', page: 84 },
+                    { id: 'K', title: 'K. Plan de Formación del profesorado', page: 84 },
+                    { id: 'L', title: 'L. Organización y distribución tiempo escolar', page: 88 },
+                    { id: 'M', title: 'M. Procedimientos de evaluación interna', page: 98 },
+                    { id: 'N', title: 'N. Agrupamientos y asignación de tutorías', page: 101 },
+                    { id: 'Ñ', title: 'Ñ. Criterios para programaciones didácticas', page: 105 },
+                    { id: 'O', title: 'O. Planes estratégicos del centro', page: 108 }
+                ]
+            },
+            {
+                id: 'rof',
+                title: 'Reglamento de Organización y Funcionamiento (ROF)',
+                file: 'ROF__gestion__poat_y_convivencia_25.pdf',
+                icon: '⚖️',
+                color: '#8b5cf6',
+                colorDark: '#7c3aed',
+                sections: [
+                    { id: 'A', title: 'A. Cauces de participación comunidad educativa', page: 3 },
+                    { id: 'B', title: 'B. Criterios y procedimientos de transparencia', page: 26 },
+                    { id: 'C', title: 'C. Organización de espacios y recursos', page: 27 },
+                    { id: 'D', title: 'D. Vigilancia de recreo y entradas/salidas', page: 34 },
+                    { id: 'E', title: 'E. Colaboración en gratuidad de libros', page: 37 },
+                    { id: 'F', title: 'F. Plan de autoprotección', page: 40 },
+                    { id: 'G', title: 'G. Equipos de evaluación', page: 49 },
+                    { id: 'H', title: 'H. Uso de móviles y acceso seguro a internet', page: 50 },
+                    { id: 'I', title: 'I. Uniforme del alumnado', page: 53 },
+                    { id: 'J', title: 'J. Prevención de riesgos laborales', page: 53 }
+                ]
+            },
+            {
+                id: 'poat',
+                title: 'Plan de Orientación y Acción Tutorial (POAT)',
+                file: 'ROF__gestion__poat_y_convivencia_25.pdf',
+                icon: '🎯',
+                color: '#10b981',
+                colorDark: '#059669',
+                sections: [
+                    { id: '0', title: 'Introducción y marco normativo', page: 67 },
+                    { id: '1', title: '1. Objetivos generales del PAT', page: 68 },
+                    { id: '2', title: '2. Programas de tutoría', page: 68 },
+                    { id: '3', title: '3. Programación de actividades', page: 68 },
+                    { id: '4', title: '4. Acogida y tránsito entre etapas', page: 68 },
+                    { id: '5', title: '5. Atención al alumnado con NEE', page: 68 },
+                    { id: '6', title: '6. Coordinación del equipo docente', page: 68 },
+                    { id: '7', title: '7. Colaboración con las familias', page: 69 },
+                    { id: '8', title: '8. Recogida y organización de datos', page: 69 },
+                    { id: '9', title: '9. Recursos y materiales', page: 69 }
+                ]
+            },
+            {
+                id: 'convivencia',
+                title: 'Plan de Convivencia',
+                file: 'ROF__gestion__poat_y_convivencia_25.pdf',
+                icon: '🤝',
+                color: '#ef4444',
+                colorDark: '#dc2626',
+                sections: [
+                    { id: '1', title: '1. Definición y objetivos', page: 92 },
+                    { id: '2', title: '2. Deberes y derechos del alumnado', page: 92 },
+                    { id: '3', title: '3. Diagnóstico del estado de la convivencia', page: 92 },
+                    { id: '4', title: '4. Normas de convivencia', page: 92 },
+                    { id: '5', title: '5. Comisión de Convivencia', page: 92 },
+                    { id: '6', title: '6. Aula de Convivencia', page: 92 },
+                    { id: '7', title: '7. Promoción de la convivencia', page: 92 },
+                    { id: '8', title: '8. Medidas preventivas y de resolución', page: 92 },
+                    { id: '9', title: '9. Delegados y delegadas del alumnado', page: 93 },
+                    { id: '10', title: '10. Delegados de padres y madres', page: 93 },
+                    { id: '11', title: '11. Formación de la comunidad educativa', page: 93 },
+                    { id: '12', title: '12. Seguimiento y evaluación del plan', page: 93 },
+                    { id: '13', title: '13. Colaboración con entidades externas', page: 93 },
+                    { id: '14', title: '14. Protocolos de actuación', page: 93 }
+                ]
+            }
+        ];
+
+        // Variables globales
+        let currentDoc = null;
+        let currentPage = 1;
+
+        // Elementos del DOM
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const menuBtn = document.getElementById('menuBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const documentGrid = document.getElementById('documentGrid');
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const pdfContainer = document.getElementById('pdfContainer');
+        const pdfIframe = document.getElementById('pdfIframe');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const docIcon = document.getElementById('docIcon');
+        const docTitle = document.getElementById('docTitle');
+        const pageInfo = document.getElementById('pageInfo');
+
+        // Renderizar documentos
+        function renderDocuments() {
+            documentGrid.innerHTML = documents.map(doc => `
+                <div class="document-card" data-doc="${doc.id}" style="--doc-color: ${doc.color}; --doc-color-dark: ${doc.colorDark}">
+                    <div class="doc-header">
+                        <div class="doc-icon" style="background: linear-gradient(135deg, ${doc.color} 0%, ${doc.colorDark} 100%)">
+                            ${doc.icon}
+                        </div>
+                        <div class="doc-info">
+                            <div class="doc-title">${doc.title}</div>
+                            <div class="doc-meta">
+                                <span class="doc-badge">${doc.sections.length} secciones</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="index-list" id="index-${doc.id}">
+                        ${doc.sections.map(section => `
+                            <div class="index-item" data-doc="${doc.id}" data-page="${section.page}" style="--doc-color: ${doc.color}">
+                                ${section.title}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Event listeners para documentos
+            document.querySelectorAll('.document-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('index-item')) {
+                        toggleDocument(card.dataset.doc);
+                    }
+                });
+            });
+
+            // Event listeners para índices
+            document.querySelectorAll('.index-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const docId = item.dataset.doc;
+                    const page = parseInt(item.dataset.page);
+                    loadPDF(docId, page);
+                    
+                    // Marcar como activo
+                    document.querySelectorAll('.index-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    // Cerrar sidebar en móvil
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('open');
+                        overlay.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        // Toggle documento
+        function toggleDocument(docId) {
+            const card = document.querySelector(`[data-doc="${docId}"]`);
+            const indexList = document.getElementById(`index-${docId}`);
+            const wasActive = card.classList.contains('active');
+
+            // Cerrar todos
+            document.querySelectorAll('.document-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.index-list').forEach(l => l.classList.remove('active'));
+
+            // Abrir el seleccionado si no estaba activo
+            if (!wasActive) {
+                card.classList.add('active');
+                indexList.classList.add('active');
+                const doc = documents.find(d => d.id === docId);
+                if (doc) {
+                    loadPDF(docId, doc.sections[0].page);
+                }
+            }
+        }
+
+        // Cargar PDF
+        function loadPDF(docId, page = 1) {
+            const doc = documents.find(d => d.id === docId);
+            if (!doc) {
+                console.error('Documento no encontrado:', docId);
+                return;
+            }
+
+            currentDoc = doc;
+            currentPage = page;
+
+            // Mostrar loading
+            loadingOverlay.classList.add('active');
+            welcomeScreen.style.display = 'none';
+            pdfContainer.style.display = 'flex';
+
+            // Actualizar info del documento
+            docIcon.textContent = doc.icon;
+            docTitle.textContent = doc.title;
+            pageInfo.textContent = `Página ${page}`;
+
+            // Usar Google PDF Viewer para mejor compatibilidad
+            const pdfUrl = encodeURIComponent(window.location.origin + window.location.pathname.replace('index.html', '') + doc.file);
+            const viewerUrl = `https://docs.google.com/viewer?url=${pdfUrl}&embedded=true&page=${page}`;
+            
+            console.log('Cargando PDF:', doc.file, 'Página:', page);
+            console.log('URL del viewer:', viewerUrl);
+
+            // Configurar iframe
+            pdfIframe.onload = function() {
+                console.log('PDF cargado correctamente');
+                loadingOverlay.classList.remove('active');
+            };
+
+            pdfIframe.onerror = function(e) {
+                console.error('Error cargando PDF:', e);
+                loadingOverlay.classList.remove('active');
+                alert('Error al cargar el PDF. Intenta abrir el archivo directamente.');
+            };
+
+            // Cargar PDF - intentar primero con navegador nativo
+            pdfIframe.src = `${doc.file}#page=${page}`;
+
+            // Timeout para quitar loading si tarda mucho
+            setTimeout(() => {
+                loadingOverlay.classList.remove('active');
+            }, 3000);
+        }
+
+        // Menú móvil
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        // Descargar PDFs
+        downloadBtn.addEventListener('click', () => {
+            if (confirm('¿Descargar todos los PDFs del Plan de Centro?')) {
+                const uniquePdfs = [...new Set(documents.map(doc => doc.file))];
+                
+                uniquePdfs.forEach((pdfFile, index) => {
+                    setTimeout(() => {
+                        const link = document.createElement('a');
+                        link.href = pdfFile;
+                        link.download = pdfFile;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }, index * 500);
+                });
+            }
+        });
+
+        // PWA Install
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+        const dismissBtn = document.getElementById('dismissBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.classList.add('active');
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log('Instalación:', outcome);
+            deferredPrompt = null;
+            installPrompt.classList.remove('active');
+        });
+
+        dismissBtn.addEventListener('click', () => {
+            installPrompt.classList.remove('active');
+        });
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('✅ Service Worker registrado'))
+                .catch(err => console.log('❌ Error SW:', err));
+        }
+
+        // Inicializar
+        console.log('Inicializando aplicación...');
+        console.log('Documentos disponibles:', documents.length);
+        renderDocuments();
+    </script>
+</body>
+</html>
