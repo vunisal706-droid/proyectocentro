@@ -1,0 +1,33 @@
+{
+  "name": "Plan de Centro CEIP Capitulaciones",
+  "short_name": "Plan Centro",
+  "description": "Visualizador del Plan de Centro del CEIP Capitulaciones - Santa Fe, Granada",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#2196F3",
+  "theme_color": "#2196F3",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA0klEQVRYhe2WQQ6DMAxE3yH3v1KP0JW7QqVKVCq1gA0LPGkWkZKM/8RxnBhjzN8DXAFcAVwB/AXgDuAB4AngBeBtHGPM7wMeAN4A3gE8x/4dwAPA3Ri/A7gZY8wZADcANwBXY/wK4GKM/wnAFcAVwBXAXwDuAN4AngDeAF7GMcb8PuBpjD8BvIzxO4C7McaYMwBuxtgVwNUYvxpjzG8DrgCuAK4A/gJwN8Y9jfEHgJcxxhjz+4CnMf4E8DLG7wDuxhhzBsDNGLsCuBrjV2OM+TRfpPJLMd9C8yQAAAAASUVORK5CYII=",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA0klEQVRYhe2WQQ6DMAxE3yH3v1KP0JW7QqVKVCq1gA0LPGkWkZKM/8RxnBhjzN8DXAFcAVwB/AXgDuAB4AngBeBtHGPM7wMeAN4A3gE8x/4dwAPA3Ri/A7gZY8wZADcANwBXY/wK4GKM/wnAFcAVwBXAXwDuAN4AngDeAF7GMcb8PuBpjD8BvIzxO4C7McaYMwBuxtgVwNUYvxpjzG8DrgCuAK4A/gJwN8Y9jfEHgJcxxhjz+4CnMf4E8DLG7wDuxhhzBsDNGLsCuBrjV2OM+TRfpPJLMd9C8yQAAAAASUVORK5CYII=",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA0klEQVRYhe2WQQ6DMAxE3yH3v1KP0JW7QqVKVCq1gA0LPGkWkZKM/8RxnBhjzN8DXAFcAVwB/AXgDuAB4AngBeBtHGPM7wMeAN4A3gE8x/4dwAPA3Ri/A7gZY8wZADcANwBXY/wK4GKM/wnAFcAVwBXAXwDuAN4AngDeAF7GMcb8PuBpjD8BvIzxO4C7McaYMwBuxtgVwNUYvxpjzG8DrgCuAK4A/gJwN8Y9jfEHgJcxxhjz+4CnMf4E8DLG7wDuxhhzBsDNGLsCuBrjV2OM+TRfpPJLMd9C8yQAAAAASUVORK5CYII=",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "lang": "es",
+  "dir": "ltr",
+  "scope": "./",
+  "prefer_related_applications": false
+}

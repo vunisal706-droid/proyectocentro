@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plan de Centro CEIP Capitulaciones - Visualizador por secciones">
+    <meta name="theme-color" content="#2196F3">
+    <title>Plan de Centro CEIP Capitulaciones</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA0klEQVRYhe2WQQ6DMAxE3yH3v1KP0JW7QqVKVCq1gA0LPGkWkZKM/8RxnBhjzN8DXAFcAVwB/AXgDuAB4AngBeBtHGPM7wMeAN4A3gE8x/4dwAPA3Ri/A7gZY8wZADcANwBXY/wK4GKM/wnAFcAVwBXAXwDuAN4AngDeAF7GMcb8PuBpjD8BvIzxO4C7McaYMwBuxtgVwNUYvxpjzG8DrgCuAK4A/gJwN8Y9jfEHgJcxxhjz+4CnMf4E8DLG7wDuxhhzBsDNGLsCuBrjV2OM+TRfpPJLMd9C8yQAAAAASUVORK5CYII=">
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA0klEQVRYhe2WQQ6DMAxE3yH3v1KP0JW7QqVKVCq1gA0LPGkWkZKM/8RxnBhjzN8DXAFcAVwB/AXgDuAB4AngBeBtHGPM7wMeAN4A3gE8x/4dwAPA3Ri/A7gZY8wZADcANwBXY/wK4GKM/wnAFcAVwBXAXwDuAN4AngDeAF7GMcb8PuBpjD8BvIzxO4C7McaYMwBuxtgVwNUYvxpjzG8DrgCuAK4A/gJwN8Y9jfEHgJcxxhjz+4CnMf4E8DLG7wDuxhhzBsDNGLsCuBrjV2OM+TRfpPJLMd9C8yQAAAAASUVORK5CYII=">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1>Plan de Centro 2025</h1>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Buscar en el documento..." aria-label="Buscar">
+                    <button id="searchBtn" aria-label="Buscar">🔍</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>CEIP Capitulaciones</h2>
+                <p class="sidebar-subtitle">Santa Fe, Granada</p>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-page="3" data-section="proyecto-educativo">
+                    <span class="nav-icon">📘</span>
+                    <span class="nav-text">Proyecto Educativo</span>
+                </button>
+                <button class="nav-item" data-page="25" data-section="pad">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">PAD</span>
+                    <span class="nav-subtitle">Plan de Atención a la Diversidad</span>
+                </button>
+                <button class="nav-item" data-page="131" data-section="cil">
+                    <span class="nav-icon">🌐</span>
+                    <span class="nav-text">CIL</span>
+                    <span class="nav-subtitle">Currículo Integrado de Lenguas</span>
+                </button>
+                <button class="nav-item" data-page="201" data-section="rof">
+                    <span class="nav-icon">⚖️</span>
+                    <span class="nav-text">ROF</span>
+                    <span class="nav-subtitle">Reglamento de Organización</span>
+                </button>
+                <button class="nav-item" data-page="256" data-section="proyecto-gestion">
+                    <span class="nav-icon">💼</span>
+                    <span class="nav-text">Proyecto de Gestión</span>
+                </button>
+                <button class="nav-item" data-page="267" data-section="poat">
+                    <span class="nav-icon">🧭</span>
+                    <span class="nav-text">POAT</span>
+                    <span class="nav-subtitle">Plan de Orientación y Acción Tutorial</span>
+                </button>
+                <button class="nav-item" data-page="292" data-section="plan-convivencia">
+                    <span class="nav-icon">🤝</span>
+                    <span class="nav-text">Plan de Convivencia</span>
+                </button>
+                <button class="nav-item" data-page="1" data-section="documento-completo">
+                    <span class="nav-icon">📄</span>
+                    <span class="nav-text">Documento Completo</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="pdf-controls">
+                <div class="controls-left">
+                    <button id="prevPage" aria-label="Página anterior">◀️</button>
+                    <span class="page-info">
+                        Página <span id="pageNum">1</span> de <span id="pageCount">0</span>
+                    </span>
+                    <button id="nextPage" aria-label="Página siguiente">▶️</button>
+                </div>
+                <div class="controls-right">
+                    <button id="zoomOut" aria-label="Reducir zoom">−</button>
+                    <span id="zoomLevel">100%</span>
+                    <button id="zoomIn" aria-label="Aumentar zoom">+</button>
+                    <button id="downloadPdf" aria-label="Descargar PDF">📥</button>
+                </div>
+            </div>
+
+            <div class="pdf-viewer" id="pdfViewer">
+                <canvas id="pdfCanvas"></canvas>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Cargando documento...</p>
+                </div>
+            </div>
+
+            <div class="search-results" id="searchResults" style="display: none;">
+                <div class="search-results-header">
+                    <h3>Resultados de búsqueda</h3>
+                    <button id="closeSearch" aria-label="Cerrar búsqueda">✕</button>
+                </div>
+                <div class="search-results-list" id="searchResultsList"></div>
+            </div>
+        </main>
+    </div>
+
+    <div class="install-banner" id="installBanner" style="display: none;">
+        <p>📱 Instala esta app para acceder sin conexión</p>
+        <button id="installBtn">Instalar</button>
+        <button id="dismissInstall">✕</button>
+    </div>
+
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
