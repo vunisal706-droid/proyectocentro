@@ -1,0 +1,47 @@
+# ⚡ INICIO RÁPIDO
+
+## 🚀 INSTALACIÓN EN 5 PASOS
+
+### 1️⃣ DESCARGA
+- Descarga el archivo `plan-centro-completo.zip`
+
+### 2️⃣ DESCOMPRIME
+- Descomprime el ZIP en tu ordenador
+- Verás 9 archivos
+
+### 3️⃣ PRUEBA LOCAL (Opcional pero recomendado)
+- Abre el archivo `TEST.html` en tu navegador
+- Haz click en "Ejecutar Test"
+- Si todo está ✅ verde, continúa al paso 4
+- Si algo está ❌ rojo, verifica que todos los archivos estén
+
+### 4️⃣ SUBE A GITHUB
+- Crea un repositorio nuevo en GitHub
+- Sube TODOS los archivos (arrástralos)
+- Ve a Settings → Pages
+- Selecciona "main" branch
+- Guarda
+
+### 5️⃣ ACCEDE
+- Espera 1-2 minutos
+- Tu app estará en: `https://TU-USUARIO.github.io/NOMBRE-REPO/`
+
+---
+
+## ⚠️ IMPORTANTE
+
+El PDF DEBE llamarse exactamente: **`plan_de_centro_2025.pdf`**
+
+Si no funciona, abre `INSTRUCCIONES.md` para ver la guía completa de solución de problemas.
+
+---
+
+## 📞 ¿PROBLEMAS?
+
+1. Abre la consola del navegador (F12)
+2. Busca mensajes de error
+3. Verifica la sección "SOLUCIÓN DE PROBLEMAS" en `INSTRUCCIONES.md`
+
+---
+
+**¡Listo! Tu Plan de Centro estará disponible online y offline 🎉**
