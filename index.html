@@ -416,6 +416,32 @@ function findSection(id){
   }
   return null;
 }
+/* ---------- Soporte de anclas de segundo nivel ----------
+   Las subsecciones viven en s.subs y su id ya está impreso en el
+   html del apartado padre. findSection solo miraba el primer nivel,
+   así que un enlace externo del tipo #pe-e-e-7-promocion-del-alumnado
+   no se resolvía y caía en el índice. Esto lo arregla. */
+function findSub(id){
+  for (const t of TABS) for (const g of t.groups) {
+    for (const s of (D[g.key]||[])) {
+      if ((s.subs||[]).some(x => x.id === id))
+        return {...s, tab:t.id, tabLabel:t.label, groupLabel:g.label, key:g.key};
+    }
+  }
+  return null;
+}
+/* Devuelve el apartado que hay que abrir, sea un id de primer nivel o de subsección */
+function resolve(id){ return findSection(id) || findSub(id); }
+
+/* Lleva la vista hasta la subsección una vez pintado el apartado */
+function scrollToAnchor(id){
+  if (!id) return;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }));
+}
+
 function siblings(id){
   const s = findSection(id); if(!s) return [null,null];
   const arr = D[s.key]||[]; const i = arr.findIndex(x=>x.id===id);
@@ -615,13 +641,22 @@ function render(){
   main.querySelectorAll('[data-sec]').forEach(b =>
     b.onclick = () => go(b.dataset.tab || state.tab, b.dataset.sec));
   renderTabs(); renderSidebar();
-  window.scrollTo({top:0,behavior:'instant'});
+  if (state.anchor) { scrollToAnchor(state.anchor); state.anchor = null; }
+  else window.scrollTo({top:0,behavior:'instant'});
 }
 
 function go(tab, sec){
-  state.tab = tab; state.sec = sec; state.query='';
+  state.tab = tab; state.query='';
   $('#q').value='';
-  if (sec){ const s=findSection(sec); if(s) state.tab=s.tab; }
+  state.sec = sec; state.anchor = null;
+  if (sec){
+    const s = resolve(sec);
+    if (s){
+      state.tab = s.tab;
+      state.sec = s.id;                       // el apartado que se pinta
+      if (s.id !== sec) state.anchor = sec;   // la subsección a la que ir
+    }
+  }
   location.hash = sec ? sec : tab;
   render();
 }
@@ -646,15 +681,25 @@ window.addEventListener('hashchange', () => {
   const h = location.hash.slice(1);
   if (!h) return;
   if (h.startsWith('#')) return;
-  const s = findSection(h);
-  if (s && s.id!==state.sec){ state.tab=s.tab; state.sec=s.id; state.query=''; render(); }
+  const s = resolve(h);
+  if (!s) return;
+  const anchor = (s.id !== h) ? h : null;
+  if (s.id !== state.sec){
+    state.tab = s.tab; state.sec = s.id; state.query = ''; state.anchor = anchor;
+    render();
+  } else if (anchor){
+    scrollToAnchor(anchor);   // ya estamos en el apartado: solo hay que bajar
+  }
 });
 
 /* ---------- arranque ---------- */
 (function init(){
   const h = location.hash.slice(1);
-  const s = h && findSection(h);
-  if (s){ state.tab=s.tab; state.sec=s.id; }
+  const s = h && resolve(h);
+  if (s){
+    state.tab = s.tab; state.sec = s.id;
+    if (s.id !== h) state.anchor = h;
+  }
   else if (h && TABS.some(t=>t.id===h)) state.tab = h;
   render();
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
