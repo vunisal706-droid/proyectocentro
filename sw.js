@@ -1,4 +1,4 @@
-const CACHE = 'plan-centro-v5-b2611101802';
+const CACHE = 'plan-centro-v5-b2611111732';
 const ASSETS = [
   './', './index.html', './manifest.json',
   './data/resumenes.js',
