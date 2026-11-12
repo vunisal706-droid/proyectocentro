@@ -476,7 +476,7 @@ function renderSidebar(){
 /* ---------- vistas ---------- */
 function viewInicio(){
   const bloques = [
-    {ico:'⚡', t:'Resúmenes prácticos', d:'El Proyecto Educativo en 20 páginas y el ROF con el Proyecto de Gestión en 17. Lo esencial, en lenguaje claro.', tab:'resumen', b:'3 documentos', c:'respe'},
+    {ico:'⚡', t:'Resúmenes prácticos', d:'El Proyecto Educativo en 20 páginas, el ROF en 13 y el Proyecto de Gestión en 10. Lo esencial, en lenguaje claro y para descargar en PDF.', tab:'resumen', b:'3 documentos', c:'respe'},
     {ico:'📘', t:'Proyecto Educativo', d:'Apartados A a P: objetivos propios, currículo, evaluación, atención a la diversidad, convivencia, planes y programas.', tab:'pe', b:'18 apartados', c:'pe'},
     {ico:'⚖️', t:'ROF y Proyecto de Gestión', d:'Organización y funcionamiento del centro, órganos de gobierno, espacios, recreos, autoprotección y gestión económica.', tab:'rof', b:'10 + 7 apartados', c:'rof'},
     {ico:'📎', t:'Anexos', d:'Atención a la Diversidad, Orientación y Acción Tutorial, Convivencia y Currículo Integrado de las Lenguas.', tab:'anexos', b:'4 planes', c:'anexos'},
@@ -503,6 +503,19 @@ function viewInicio(){
     </div>`;
 }
 
+const RES_PDF = {
+  'res-pe':   ['descargas/resumenes/Resumen_Proyecto_Educativo_2026-27.pdf', 'El Proyecto Educativo en 20 páginas'],
+  'res-rof':  ['descargas/resumenes/Resumen_ROF_2026-27.pdf', 'El ROF en 13 páginas'],
+  'res-gest': ['descargas/resumenes/Resumen_Proyecto_de_Gestion_2026-27.pdf', 'El Proyecto de Gestión en 10 páginas']
+};
+function bloqueResPDF(ids){
+  return `<div class="dl-list" style="margin:0 0 22px">${ids.map(id => `
+    <a class="dl" href="${RES_PDF[id][0]}" download>
+      <span class="fic">PDF</span>
+      <span class="txt"><b>${RES_PDF[id][1]}</b><span>Cuadernillo para imprimir · 2026/27</span></span>
+    </a>`).join('')}</div>`;
+}
+
 function viewIndice(tab){
   return `
     <div class="crumb">${tab.label}</div>
@@ -511,6 +524,7 @@ function viewIndice(tab){
     ${tab.id==='anexos'?`<p style="max-width:900px;color:var(--muted);line-height:1.65;font-size:.93rem;margin:0 0 22px">
       Documentos que se incorporan al Proyecto Educativo con el mismo valor y la misma exigencia, conforme al
       artículo 21.3 del Decreto 328/2010. Desarrollan los apartados F, H, J y C.5 del Proyecto Educativo.</p>`:''}
+    ${tab.id==='resumen'?bloqueResPDF(Object.keys(RES_PDF)):''}
     <div class="cards">
       ${tab.groups.map(g => (D[g.key]||[]).map(s => `
         <button class="card" data-sec="${s.id}" style="${COLORVARS[s.accent||g.key]||COLORVARS[tab.id]||''}">
@@ -531,6 +545,7 @@ function viewSeccion(id){
     <div class="divider"></div>
     ${s.subs.length>2?`<div class="toc"><strong>En este apartado</strong><ul>
       ${s.subs.map(x=>`<li><a href="#${x.id}">${x.titulo}</a></li>`).join('')}</ul></div>`:''}
+    ${RES_PDF[s.id]?bloqueResPDF([s.id]):''}
     <div class="content">${s.html}</div>
     <div class="pager">
       <button ${prev?`data-sec="${prev.id}"`:'disabled'}>${prev?'← '+prev.titulo:''}</button>
@@ -708,12 +723,12 @@ window.addEventListener('hashchange', () => {
 <script>
 /* Aviso de novedades: sale una sola vez en cada dispositivo */
 (function(){
-  var KEY='pc-novedad', ID='2026-11-10-aula-convivencia';
+  var KEY='pc-novedad', ID='2026-11-12-resumenes';
   try{ if(localStorage.getItem(KEY)===ID) return; }catch(e){ return; }
   var d=document.createElement('div');
   d.setAttribute('role','status');
   d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:9999;width:max-content;max-width:min(440px,calc(100% - 32px));background:#fff;color:#1c1917;border:1px solid #99f6e4;border-radius:12px;box-shadow:0 8px 22px rgba(0,0,0,.12);padding:14px 16px;font:14px/1.45 var(--font,system-ui);display:flex;gap:12px;align-items:flex-start';
-  d.innerHTML='<div style="flex:1"><strong>Novedad</strong><br>Nuevo apartado J.4 del Proyecto Educativo: Aula de Convivencia «Aula CRECE».</div><button type="button" aria-label="Cerrar" style="border:0;background:#0d9488;color:#fff;border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer">Entendido</button>';
+  d.innerHTML='<div style="flex:1"><strong>Novedad</strong><br>Resúmenes actualizados del Proyecto Educativo, el ROF y el Proyecto de Gestión, ahora también en PDF.</div><button type="button" aria-label="Cerrar" style="border:0;background:#0d9488;color:#fff;border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer">Entendido</button>';
   d.querySelector('button').onclick=function(){ try{localStorage.setItem(KEY,ID);}catch(e){} d.remove(); };
   document.body.appendChild(d);
 })();
