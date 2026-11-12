@@ -723,12 +723,12 @@ window.addEventListener('hashchange', () => {
 <script>
 /* Aviso de novedades: sale una sola vez en cada dispositivo */
 (function(){
-  var KEY='pc-novedad', ID='2026-11-12-resumenes';
+  var KEY='pc-novedad', ID='2026-11-12-salidas';
   try{ if(localStorage.getItem(KEY)===ID) return; }catch(e){ return; }
   var d=document.createElement('div');
   d.setAttribute('role','status');
   d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:9999;width:max-content;max-width:min(440px,calc(100% - 32px));background:#fff;color:#1c1917;border:1px solid #99f6e4;border-radius:12px;box-shadow:0 8px 22px rgba(0,0,0,.12);padding:14px 16px;font:14px/1.45 var(--font,system-ui);display:flex;gap:12px;align-items:flex-start';
-  d.innerHTML='<div style="flex:1"><strong>Novedad</strong><br>Resúmenes actualizados del Proyecto Educativo, el ROF y el Proyecto de Gestión, ahora también en PDF.</div><button type="button" aria-label="Cerrar" style="border:0;background:#0d9488;color:#fff;border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer">Entendido</button>';
+  d.innerHTML='<div style="flex:1"><strong>Novedad</strong><br>Proyecto de Gestión: el dinero de las salidas lo recoge la delegada de clase o la tutoría y se rinde ante la coordinación de ciclo.</div><button type="button" aria-label="Cerrar" style="border:0;background:#0d9488;color:#fff;border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer">Entendido</button>';
   d.querySelector('button').onclick=function(){ try{localStorage.setItem(KEY,ID);}catch(e){} d.remove(); };
   document.body.appendChild(d);
 })();
