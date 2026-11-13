@@ -1,9 +1,10 @@
-const CACHE = 'plan-centro-v5-b2611121641';
+const CACHE = 'plan-centro-v5-b2611130950';
 const ASSETS = [
   './', './index.html', './manifest.json',
   './data/resumenes.js',
   './data/pe.js','./data/rof.js','./data/gestion.js','./data/anexos.js',
-  './icons/icon-192.png','./icons/icon-512.png','./icons/logo-512.png'
+  './icons/icon-192.png','./icons/icon-512.png','./icons/logo-512.png',
+  './descargas/autoproteccion/planos_evacuacion_2026-27.jpg'
 ];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
